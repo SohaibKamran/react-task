@@ -1,6 +1,8 @@
 import * as React from 'react';
 import './style.css';
 import 'antd/dist/antd.css';
+import { Select } from 'antd';
+const { Option } = Select;
 import { Table } from 'antd';
 const items = [
   {
@@ -67,6 +69,10 @@ const items = [
     vatPercentage: 15,
   },
 ];
+const handleChange = (value) => {
+  debugger;
+  console.log(value);
+};
 export default function App() {
   const [dataSource, setDataSource] = React.useState([]);
   React.useEffect(() => {
@@ -81,7 +87,7 @@ export default function App() {
         vatPercentage: null,
       },
     ];
-    data.push(items[0]);
+    // data.push(items[0]);
     setDataSource(data);
   });
   const columns = [
@@ -89,6 +95,14 @@ export default function App() {
       title: 'Item',
       dataIndex: 'itemId',
       key: 'itemId',
+      render: () => {
+        return (
+          <select style={{ width: 120 }} onChange={handleChange}>
+            {/* for loop laga do items ka yaha aur value get hojygi current item ki */}
+            <option value="jack">Jack (100)</option>
+          </select>
+        );
+      }, 
     },
     {
       title: 'Unit',
@@ -127,6 +141,9 @@ export default function App() {
       title: 'Total/Inc VAT',
       dataIndex: 'total/incVAT',
       key: 'total/incVAT',
+      render: () => {
+        return 56 * 36;
+      },
     },
   ];
   return (
