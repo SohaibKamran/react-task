@@ -88,42 +88,45 @@ export default function App() {
     {
       title: 'Item',
       dataIndex: 'itemId',
-      key:'itemId'
+      key: 'itemId',
     },
     {
       title: 'Unit',
       dataIndex: 'unit',
-      key:'itemId'
+      key: 'unit',
     },
     {
       title: 'Cost Price',
       dataIndex: 'price',
-      key:'itemId'
+      key: 'price',
     },
     {
       title: 'Quantity',
-      dataIndex: 'name',
-      key:'itemId'
+      dataIndex: 'quantity',
+      key: 'quantity',
     },
     {
       title: 'Total/Exc VAT',
-      dataIndex: 'name',
-      key:'itemId'
+      dataIndex: 'total/excVAT',
+      key: 'total/excVAT',
+      render: () => {
+        return 56 * 36;
+      },
     },
     {
       title: 'VAT%',
-      dataIndex: 'name',
-      key:'itemId'
+      dataIndex: 'vatPercentage',
+      key: 'vatPercentage',
     },
     {
       title: 'Discount',
-      dataIndex: 'name',
-      key:'itemId'
+      dataIndex: 'discountPercentage',
+      key: 'discountPercentage',
     },
     {
       title: 'Total/Inc VAT',
-      dataIndex: 'name',
-      key:'itemId'
+      dataIndex: 'total/incVAT',
+      key: 'total/incVAT',
     },
   ];
   return (
