@@ -94,7 +94,7 @@ export default function App() {
     var index = tableData.findIndex((data) => data.itemId === item.itemId);
     tableData[index].unit = event.target.value;
     console.log(tableData);
-    // setDataSource([...tableData, tableData]);
+    setDataSource([...tableData, tableData]);
   };
   const columns = [
     {
