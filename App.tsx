@@ -1,8 +1,6 @@
 import * as React from 'react';
 import './style.css';
 import 'antd/dist/antd.css';
-import { Select } from 'antd';
-const { Option } = Select;
 import { Table } from 'antd';
 const items = [
   {
@@ -69,27 +67,18 @@ const items = [
     vatPercentage: 15,
   },
 ];
-const handleChange = (value) => {
-  debugger;
-  console.log(value);
-};
+const tableData = [{}];
 export default function App() {
   const [dataSource, setDataSource] = React.useState([]);
   React.useEffect(() => {
-    const data = [
-      {
-        itemId: null,
-        itemName: '',
-        price: null,
-        unit: '',
-        quantity: null,
-        discountPercentage: null,
-        vatPercentage: null,
-      },
-    ];
-    // data.push(items[0]);
-    setDataSource(data);
+    setDataSource(tableData);
   });
+  const handleChange = (event) => {
+    const item = items.find((item) => item.itemId === +event.target.value);
+    tableData.push(item);
+    console.log(tableData);
+    setDataSource(tableData);
+  };
   const columns = [
     {
       title: 'Item',
@@ -98,11 +87,16 @@ export default function App() {
       render: () => {
         return (
           <select style={{ width: 120 }} onChange={handleChange}>
-            {/* for loop laga do items ka yaha aur value get hojygi current item ki */}
-            <option value="jack">Jack (100)</option>
+            {items.map((item) => (
+              <option value={item.itemId}>
+                <div>
+                  ID {item.itemId} CostPrice:{item.price}
+                </div>
+              </option>
+            ))}
           </select>
         );
-      }, 
+      },
     },
     {
       title: 'Unit',
