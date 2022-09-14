@@ -131,7 +131,7 @@ export default function App() {
     },
     {
       title: 'Cost Price',
-      dataIndex: 'unit',
+      dataIndex: 'price',
       key: 'price',
     },
     {
@@ -156,11 +156,8 @@ export default function App() {
     },
     {
       title: 'Total/Inc VAT',
-      dataIndex: 'total/incVAT',
-      key: 'total/incVAT',
-      render: () => {
-        return 56 * 36;
-      },
+      dataIndex: 'totalPriceExc',
+      key: 'totalPriceExc',
     },
   ];
   return (
