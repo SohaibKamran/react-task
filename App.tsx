@@ -77,7 +77,7 @@ export default function App() {
     const item = items.find((item) => item.itemId === +event.target.value);
     tableData.push(item);
     console.log(tableData);
-    setDataSource(tableData);
+    setDataSource([...tableData,item]);
   };
   const columns = [
     {
