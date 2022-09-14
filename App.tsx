@@ -26,7 +26,7 @@ const items = [
     itemName: 'Pencil',
     price: 20,
     unit: 'Mile',
-    quantity: 1,
+    quantity: 2,
     discountPercentage: 20,
     vatPercentage: 15,
   },
@@ -62,31 +62,48 @@ const items = [
     itemName: 'Chair',
     price: 90000,
     unit: 'Mile',
-    quantity: 1,
+    quantity: 2,
     discountPercentage: 20,
     vatPercentage: 15,
   },
 ];
-const tableData = [{}];
+const tableData = [
+  {
+    itemId: null,
+    itemName: '',
+    price: null,
+    unit: '',
+    quantity: null,
+    discountPercentage: null,
+    vatPercentage: null,
+    totalPriceExc: null,
+  },
+];
 export default function App() {
   const [dataSource, setDataSource] = React.useState([]);
   React.useEffect(() => {
     setDataSource(tableData);
   });
   const handleChange = (event) => {
-    const item = items.find((item) => item.itemId === +event.target.value);
-    tableData.push(item);
+    var item = items.find((item) => item.itemId === +event.target.value);
+    tableData.unshift({ ...item, totalPriceExc: item.quantity * item.price });
     console.log(tableData);
-    setDataSource([...tableData,item]);
+    setDataSource([...tableData, tableData]);
+  };
+  const unitChange = (event, item) => {
+    var index = tableData.findIndex((data) => data.itemId === item.itemId);
+    tableData[index].unit = event.target.value;
+    console.log(tableData);
+    // setDataSource([...tableData, tableData]);
   };
   const columns = [
     {
       title: 'Item',
       dataIndex: 'itemId',
       key: 'itemId',
-      render: () => {
+      render: (itemName) => {
         return (
-          <select style={{ width: 120 }} onChange={handleChange}>
+          <select value={itemName} onChange={handleChange}>
             {items.map((item) => (
               <option value={item.itemId}>
                 <div>
@@ -102,10 +119,19 @@ export default function App() {
       title: 'Unit',
       dataIndex: 'unit',
       key: 'unit',
+      render: (unit, item) => (
+        <input
+          type="text"
+          value={unit}
+          onChange={(e) => {
+            unitChange(e, item);
+          }}
+        />
+      ),
     },
     {
       title: 'Cost Price',
-      dataIndex: 'price',
+      dataIndex: 'unit',
       key: 'price',
     },
     {
@@ -115,11 +141,8 @@ export default function App() {
     },
     {
       title: 'Total/Exc VAT',
-      dataIndex: 'total/excVAT',
-      key: 'total/excVAT',
-      render: () => {
-        return 56 * 36;
-      },
+      dataIndex: 'totalPriceExc',
+      key: 'totalPriceExc',
     },
     {
       title: 'VAT%',

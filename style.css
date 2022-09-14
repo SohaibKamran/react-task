@@ -3,8 +3,8 @@ p {
   font-family: Lato;
 }
 .ant-table {
-  border-radius: 5px;
-}
+  border-radius: 5px; 
+} 
 .ant-table-thead > tr > th {
   color: white;
   background: #3071b9 !important;
