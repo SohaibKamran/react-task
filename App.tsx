@@ -87,14 +87,14 @@ export default function App() {
   const handleChange = (event) => {
     var item = items.find((item) => item.itemId === +event.target.value);
     tableData.unshift({ ...item, totalPriceExc: item.quantity * item.price });
-    console.log(tableData);
     setDataSource([...tableData, tableData]);
   };
   const unitChange = (event, item) => {
+    console.log('Old state vale = ', tableData[0].unit);
     var index = tableData.findIndex((data) => data.itemId === item.itemId);
     tableData[index].unit = event.target.value;
-    console.log(tableData);
     setDataSource([...tableData, tableData]);
+    console.log('New state vale = ', tableData[0].unit);
   };
   const columns = [
     {
