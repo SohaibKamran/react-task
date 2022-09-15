@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.css';
 import 'antd/dist/antd.css';
-import { Avatar, Badge } from 'antd';
+import { Badge } from 'antd';
 import { Table } from 'antd';
 const items = [
   {
@@ -78,40 +78,43 @@ const tableData = [
     quantity: null,
     discountPercentage: null,
     vatPercentage: null,
-    totalPriceExc: null,
+    totalPriceExcVat: null,
+    totalPriceIncVat: null,
   },
 ];
 export default function App() {
   const [dataSource, setDataSource] = React.useState([]);
   React.useEffect(() => {
     setDataSource(tableData);
+    console.log('Table Data At start', dataSource);
   });
   const handleChange = (event) => {
     var item: any = items.find((item) => item.itemId === +event.target.value);
-    tableData.unshift({ ...item, totalPriceExc: item.quantity * item.price });
+    tableData.unshift(item);
     setDataSource([...tableData, item]);
+    console.log('Table Data At handle change', dataSource);
     var index = tableData.findIndex((data) => data.itemId === item.itemId);
     calculateTotal(index);
   };
   const unitChange = (event, item) => {
     var index = tableData.findIndex((data) => data.itemId === item.itemId);
     setDataSource([...tableData, (tableData[index].unit = event.target.value)]);
+    console.log('Table Data At Unit change', dataSource[index]);
   };
   const priceChange = (event, item) => {
     var index = tableData.findIndex((data) => data.itemId === item.itemId);
-    setDataSource([
-      ...tableData,
-      (tableData[index].price = +event.target.value),
-    ]);
+    setDataSource([...tableData, (tableData[index].price = +event.target.value)]);
+    console.log('Table Data At price change', dataSource[index]);
     calculateTotal(index);
   };
   const calculateTotal = (i) => {
-    console.log(tableData[i].totalPriceExc)
-    var total = tableData[i].price * tableData[i].quantity
-    var discountValue = (total *tableData[i].discountPercentage) /100;
-    total = total - discountValue
-    setDataSource([...tableData, tableData[i].totalPriceExc=total]);
-    console.log(tableData[i].totalPriceExc)
+    let totalExcVat = tableData[i].price * tableData[i].quantity;
+    let discount = (totalExcVat / 100) * tableData[i].discountPercentage;
+    totalExcVat = totalExcVat - discount;
+    let vatAmount = (tableData[i].vatPercentage / 100) * totalExcVat;
+    let totalIncVat = totalExcVat + vatAmount
+    setDataSource([...tableData,(tableData[i].totalPriceExcVat = totalExcVat),(tableData[i].totalPriceIncVat = totalIncVat)]);
+    console.log('Table Data At Calculate change', dataSource[i]);
   };
   const quantityChange = (event, item) => {
     var index = tableData.findIndex((data) => data.itemId === item.itemId);
@@ -129,9 +132,10 @@ export default function App() {
     ]);
     calculateTotal(index);
   };
-  const deleteRow = (event, item) => {
-    var newTableData = tableData.filter((item) => item.itemId != item.itemId);
-    setDataSource(newTableData);
+  const deleteRow = (itemId) => {
+    debugger
+    const newData = dataSource.filter((item) => item.itemId !== itemId);
+    setDataSource(newData);
   };
   const columns = [
     {
@@ -194,8 +198,8 @@ export default function App() {
     },
     {
       title: 'Total/Exc VAT',
-      dataIndex: 'totalPriceExc',
-      key: 'totalPriceExc',
+      dataIndex: 'totalPriceExcVat',
+      key: 'totalPriceExcVat',
     },
     {
       title: 'VAT%',
@@ -209,7 +213,7 @@ export default function App() {
       render: (discountPercentage, item) => (
         <input
           type="text"
-          value={discountPercentage}
+          value={discountPercentage ? discountPercentage : ''}
           onChange={(e) => {
             discountChange(e, item);
           }}
@@ -217,12 +221,14 @@ export default function App() {
       ),
     },
     {
-      title: 'Total/Inc VAT',
-      dataIndex: 'totalPriceExc',
-      key: 'totalPriceExc',
-      render: (itemId, item) => (
+      title: 'Total/Inc VAT', 
+      dataIndex: 'totalPriceIncVat',
+      key: 'totalPriceIncVat',
+      render: (totalPriceIncVat, item) => (
         <Badge count={`-`} style={{ backgroundColor: '#FF0057' }}>
-          <button onClick={(e) => deleteRow(e, item)}>Delete</button>
+          <button onClick={(e) => deleteRow(item.itemId)}>
+            {totalPriceIncVat}
+          </button>
         </Badge>
       ),
     },

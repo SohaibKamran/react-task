@@ -6,6 +6,6 @@ p {
   border-radius: 5px; 
 } 
 .ant-table-thead > tr > th {
-  color: white;
+  color: white; 
   background: #3071b9 !important;
 }
